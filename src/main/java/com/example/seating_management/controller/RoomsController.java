@@ -19,20 +19,20 @@ import java.util.Optional;
 public class RoomsController {
 
     private final RoomService roomService;
-
+    
     @Autowired
     public RoomsController(RoomService roomService) {
         this.roomService = roomService;
     }
-
-   
+    
+    
     @PostMapping("/add")
     public ResponseEntity<Room> addRoom(@RequestBody Room room) {
         Room newRoom = roomService.addRoom(room);
         return new ResponseEntity<>(newRoom, HttpStatus.CREATED);
     }
-
-
+    
+    
     @PutMapping("/deactivate") // all are mandatory
     public ResponseEntity<Room> deactivateRoom(
             @RequestParam String location,
