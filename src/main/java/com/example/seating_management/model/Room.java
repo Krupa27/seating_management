@@ -25,15 +25,15 @@ public class Room {
     private String roomType;
     private String roomTypeNameStandardized;
     private Integer seatCount;
-    private Integer countExcludingTrainer;
+//    private Integer countExcludingTrainer;
     private Integer seatingSetup;
-    private Integer seatingForCalculation;
+//    private Integer seatingForCalculation;
     private String priority;
     private String status;
-    private String internGenc; 
-    private Integer canBeUtilizedSeats; 
-    private String learningTrack;
-    private LocalDate availableFrom; 
+//    private String internGenc; 
+//    private Integer canBeUtilizedSeats; 
+//    private String learningTrack;
+//    private LocalDate availableFrom; 
      
     
     public RoomId getId() {
@@ -60,24 +60,24 @@ public class Room {
 	public void setSeatCount(Integer seatCount) {
 		this.seatCount = seatCount;
 	}
-	public Integer getCountExcludingTrainer() {
-		return countExcludingTrainer;
-	}
-	public void setCountExcludingTrainer(Integer countExcludingTrainer) {
-		this.countExcludingTrainer = countExcludingTrainer;
-	}
+//	public Integer getCountExcludingTrainer() {
+//		return countExcludingTrainer;
+//	}
+//	public void setCountExcludingTrainer(Integer countExcludingTrainer) {
+//		this.countExcludingTrainer = countExcludingTrainer;
+//	}
 	public Integer getSeatingSetup() {
 		return seatingSetup;
 	}
 	public void setSeatingSetup(Integer seatingSetup) {
 		this.seatingSetup = seatingSetup;
 	}
-	public Integer getSeatingForCalculation() {
-		return seatingForCalculation;
-	}
-	public void setSeatingForCalculation(Integer seatingForCalculation) {
-		this.seatingForCalculation = seatingForCalculation;
-	}
+//	public Integer getSeatingForCalculation() {
+//		return seatingForCalculation;
+//	}
+//	public void setSeatingForCalculation(Integer seatingForCalculation) {
+//		this.seatingForCalculation = seatingForCalculation;
+//	}
 	public String getPriority() {
 		return priority;
 	}
@@ -90,30 +90,30 @@ public class Room {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public String getInternGenc() {
-		return internGenc;
-	}
-	public void setInternGenc(String internGenc) {
-		this.internGenc = internGenc;
-	}
-	public Integer getCanBeUtilizedSeats() {
-		return canBeUtilizedSeats;
-	}
-	public void setCanBeUtilizedSeats(Integer canBeUtilizedSeats) {
-		this.canBeUtilizedSeats = canBeUtilizedSeats;
-	}
-	public String getLearningTrack() {
-		return learningTrack;
-	}
-	public void setLearningTrack(String learningTrack) {
-		this.learningTrack = learningTrack;
-	}
-	public LocalDate getAvailableFrom() {
-		return availableFrom;
-	}
-	public void setAvailableFrom(LocalDate availableFrom) {
-		this.availableFrom = availableFrom;
-	}
+//	public String getInternGenc() {
+//		return internGenc;
+//	}
+//	public void setInternGenc(String internGenc) {
+//		this.internGenc = internGenc;
+//	}
+//	public Integer getCanBeUtilizedSeats() {
+//		return canBeUtilizedSeats;
+//	}
+//	public void setCanBeUtilizedSeats(Integer canBeUtilizedSeats) {
+//		this.canBeUtilizedSeats = canBeUtilizedSeats;
+//	}
+//	public String getLearningTrack() {
+//		return learningTrack;
+//	}
+//	public void setLearningTrack(String learningTrack) {
+//		this.learningTrack = learningTrack;
+//	}
+//	public LocalDate getAvailableFrom() {
+//		return availableFrom;
+//	}
+//	public void setAvailableFrom(LocalDate availableFrom) {
+//		this.availableFrom = availableFrom;
+//	}
 	
 	@Transient
     private Double occupancyPercentage;
@@ -125,4 +125,8 @@ public class Room {
     public void setOccupancyPercentage(Double occupancyPercentage) {
         this.occupancyPercentage = occupancyPercentage;
     }
+    
+    
+    
+    
 }

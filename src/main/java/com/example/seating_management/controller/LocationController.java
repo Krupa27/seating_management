@@ -82,49 +82,50 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/locations")
+@CrossOrigin("*")
 public class LocationController {
 
-    @Autowired
-    private LocationService locationService;
+//    @Autowired
+//    private LocationService locationService;
 
     /**
      * Get all location statistics.
      */
-    @GetMapping
-    public List<LocationStatsDto> getAllLocationStats() {
-        return locationService.getAllLocationStats();
-    }
-
-    /**
-     * Search locations by name.
-     */
-    @GetMapping("/search")
-    public List<LocationStatsDto> searchByLocationName(@RequestParam String name) {
-        return locationService.searchByLocationName(name);
-    }
-
-    /**
-     * Sort locations by name or occupancy.
-     * @param sortBy name or occupancy
-     * @param order asc or desc
-     */
-    @GetMapping("/sort")
-    public List<LocationStatsDto> sortLocations(
-            @RequestParam String sortBy,
-            @RequestParam(defaultValue = "asc") String order) {
-        return locationService.sortLocations(sortBy, order);
-    }
-
-    /**
-     * Filter locations by occupancy percentage.
-     * @param type greater or less
-     * @param value threshold value
-     */
-    @GetMapping("/filter")
-    public List<LocationStatsDto> filterByOccupancy(
-            @RequestParam String type,
-            @RequestParam double value) {
-        return locationService.filterByOccupancy(type, value);
-    }
+//    @GetMapping
+//    public List<LocationStatsDto> getAllLocationStats() {
+//        return locationService.getAllLocationStats();
+//    }
+//
+//    /**
+//     * Search locations by name.
+//     */
+//    @GetMapping("/search")
+//    public List<LocationStatsDto> searchByLocationName(@RequestParam String name) {
+//        return locationService.searchByLocationName(name);
+//    }
+//
+//    /**
+//     * Sort locations by name or occupancy.
+//     * @param sortBy name or occupancy
+//     * @param order asc or desc
+//     */
+//    @GetMapping("/sort")
+//    public List<LocationStatsDto> sortLocations(
+//            @RequestParam String sortBy,
+//            @RequestParam(defaultValue = "asc") String order) {
+//        return locationService.sortLocations(sortBy, order);
+//    }
+//
+//    /**
+//     * Filter locations by occupancy percentage.
+//     * @param type greater or less
+//     * @param value threshold value
+//     */
+//    @GetMapping("/filter")
+//    public List<LocationStatsDto> filterByOccupancy(
+//            @RequestParam String type,
+//            @RequestParam double value) {
+//        return locationService.filterByOccupancy(type, value);
+//    }
 }
 

@@ -30,7 +30,7 @@ public class RoomId implements Serializable {
 
     @Column(length = 20) 
     private String wing;
-
+    
     private Integer roomNumber;
     public RoomId() {
     	

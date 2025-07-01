@@ -1,10 +1,10 @@
 package com.example.seating_management.dto;
-
-
+ 
+ 
 /**
- * DTO for location statistics.
- */
-
+* DTO for location statistics.
+*/
+ 
 public class LocationStatsDto {
     public String getLocation() {
 		return location;
@@ -36,16 +36,24 @@ public class LocationStatsDto {
 	public void setOccupancyPercentage(double occupancyPercentage) {
 		this.occupancyPercentage = occupancyPercentage;
 	}
-	public int getNumberOfFacilities() {
-		return numberOfFacilities;
-	}
-	public void setNumberOfFacilities(int numberOfFacilities) {
-		this.numberOfFacilities = numberOfFacilities;
-	}
+//	public int getNumberOfFacilities() {
+//		return numberOfFacilities;
+//	}
+//	public void setNumberOfFacilities(int numberOfFacilities) {
+//		this.numberOfFacilities = numberOfFacilities;
+//	}
 	private String location;
     private int totalSeats;
     private int occupiedSeats;
     private int unoccupiedSeats;
     private double occupancyPercentage;
-    private int numberOfFacilities;
+    //private int numberOfFacilities;
+    private int numberOfBuildings;
+    
+	public int getNumberOfBuildings() {
+		return numberOfBuildings;
+	}
+	public void setNumberOfBuildings(int numberOfBuildings) {
+		this.numberOfBuildings = numberOfBuildings;
+	}
 }
