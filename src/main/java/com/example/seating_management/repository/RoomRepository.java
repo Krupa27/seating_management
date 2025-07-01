@@ -16,15 +16,31 @@ import java.util.List;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, RoomId>, JpaSpecificationExecutor<Room> {
-   
-//    List<Room> findById_LocationAndId_Building(String location, String building);
+	
+	List<Room> findByIdLocationAndIdBuilding(String id_location, String id_building);
+	
+	@Query("SELECT r FROM Room r WHERE LOWER(r.roomType) = LOWER(:roomType) AND r.id.location = :location AND r.id.building = :building")
+	List<Room> findByIdLocationAndIdBuildingAndRoomType(String location, String building, String roomType);
+	
+	
+	List<Room> findByIdLocation(String location);
+	
+	// Get all distinct locations
+	
+	@Query("SELECT DISTINCT r.id.location FROM Room r")
+	List<String> findAllLocations();
+	
+	
+	
+	@Query("SELECT DISTINCT r.id.building FROM Room r WHERE r.id.location = :location")
+	List<String> findDistinctBuildingsByLocation(@Param("location") String location);
+	
+	
+    List<Room> findById_LocationAndId_Building(String location, String building);
 //    
 //    
-//    List<Room> findByIdLocationAndIdBuilding(String id_location, String id_building);
 //    
 //    
-//    @Query("SELECT r FROM Room r WHERE LOWER(r.roomType) = LOWER(:roomType) AND r.id.location = :location AND r.id.building = :building")
-//    List<Room> findByIdLocationAndIdBuildingAndRoomType(String location, String building, String roomType);
 //    
 //    
 //    // You might need methods for sorting and filtering.
@@ -34,8 +50,6 @@ public interface RoomRepository extends JpaRepository<Room, RoomId>, JpaSpecific
 //    @Query("SELECT r FROM Room r WHERE r.id.location = :location")
 //	List<Room> findByLocation(@Param("location") String location, Sort sort);
 //
-//	@Query("SELECT DISTINCT r.id.building FROM Room r WHERE r.id.location = :location")
-//	List<String> findDistinctBuildingsByLocation(@Param("location") String location);
 //	
 //	@Query("SELECT r FROM Room r WHERE r.canBeUtilizedSeats >= :minSeats")
 //	List<Room> findByAvailableSeatsGreaterThanEqual(@Param("minSeats") Integer minSeats);
@@ -54,12 +68,7 @@ public interface RoomRepository extends JpaRepository<Room, RoomId>, JpaSpecific
 //	
 //	
 //	
-//	List<Room> findByIdLocation(String location);
-//
-//    // Get all distinct locations
-//    @Query("SELECT DISTINCT r.id.location FROM Room r")
-//    List<String> findAllLocations();
-//
+
 //
 //
 //    // Filter rooms where occupancy percentage is greater than a value

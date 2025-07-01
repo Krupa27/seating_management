@@ -6,6 +6,11 @@ package com.example.seating_management.dto;
 */
  
 public class LocationStatsDto {
+	private String location;
+	private int totalSeats;
+	private int occupiedSeats;
+	private int numberOfBuildings;
+	
     public String getLocation() {
 		return location;
 	}
@@ -24,36 +29,22 @@ public class LocationStatsDto {
 	public void setOccupiedSeats(int occupiedSeats) {
 		this.occupiedSeats = occupiedSeats;
 	}
-	public int getUnoccupiedSeats() {
-		return unoccupiedSeats;
-	}
-	public void setUnoccupiedSeats(int unoccupiedSeats) {
-		this.unoccupiedSeats = unoccupiedSeats;
-	}
-	public double getOccupancyPercentage() {
-		return occupancyPercentage;
-	}
-	public void setOccupancyPercentage(double occupancyPercentage) {
-		this.occupancyPercentage = occupancyPercentage;
-	}
-//	public int getNumberOfFacilities() {
-//		return numberOfFacilities;
-//	}
-//	public void setNumberOfFacilities(int numberOfFacilities) {
-//		this.numberOfFacilities = numberOfFacilities;
-//	}
-	private String location;
-    private int totalSeats;
-    private int occupiedSeats;
-    private int unoccupiedSeats;
-    private double occupancyPercentage;
-    //private int numberOfFacilities;
-    private int numberOfBuildings;
-    
+
+
 	public int getNumberOfBuildings() {
 		return numberOfBuildings;
 	}
 	public void setNumberOfBuildings(int numberOfBuildings) {
 		this.numberOfBuildings = numberOfBuildings;
 	}
+	public LocationStatsDto() {}
+	public LocationStatsDto(String location, int totalSeats, int occupiedSeats, int numberOfBuildings) {
+		super();
+		this.location = location;
+		this.totalSeats = totalSeats;
+		this.occupiedSeats = occupiedSeats;
+		this.numberOfBuildings = numberOfBuildings;
+	}
+	
+	
 }

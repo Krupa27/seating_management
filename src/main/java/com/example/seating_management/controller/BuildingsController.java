@@ -12,9 +12,9 @@ import java.util.List;
 @CrossOrigin("*")
 public class BuildingsController {
 
-//    @Autowired
-//    private BuildingsService buildingsService;
-//
+    @Autowired
+    private BuildingsService buildingsService;
+
 //    @GetMapping("/sorted")
 //    public List<Room> getSortedRooms(@RequestParam String location,
 //                                     @RequestParam(defaultValue = "building") String sortBy,

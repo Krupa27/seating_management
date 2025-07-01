@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
  
 import com.example.seating_management.dto.LocationStatsDto;
+import com.example.seating_management.dto.RoomWrapper;
 import com.example.seating_management.model.Room;
 import com.example.seating_management.repository.RoomRepository;
- 
+
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
  
@@ -20,26 +22,120 @@ public class LocationService {
  
     @Autowired
     private RoomRepository roomRepository;
+    
+    @Autowired
+    private RoomServiceImpl roomService;
+    
+    
+    
  
     /**
      * Get all location statistics.
      */
 
-//    public List<Room> getRoomsByLocation(String location) {
-//        return roomRepository.findByIdLocation(location);
-//    }
+    public List<RoomWrapper> getRoomsByLocation(String location) {
+    	List<RoomWrapper> rwList= new ArrayList<>();
+    	for(Room r: roomRepository.findByIdLocation(location)) {
+    		 LocalDate today = LocalDate.now();
+    		RoomWrapper rw=new RoomWrapper(r.getId(),r.getSeatCount(),roomService.getRoomOccupancy(r.getId(), today));
+    		rwList.add(rw);
+    	}
+    	
+    
+    	return rwList;
+    }
+    
+    
+    
+    public List<LocationStatsDto> getAllLocations(){
+    	
+    	
+    	List<LocationStatsDto> locationList = new ArrayList<>();
+    	
+    	for(String loc: roomRepository.findAllLocations()) {
+    		LocationStatsDto location = new LocationStatsDto();
+    		
+    		HashSet<String> buildings = new HashSet<>();
+    		location.setLocation(loc);
+    		for(RoomWrapper r:getRoomsByLocation(loc)) {
+    			int totalSeats=location.getTotalSeats() + r.getTotalSeats();
+    			location.setTotalSeats(totalSeats);
+    			
+    			int OccupiedSeats= location.getOccupiedSeats() + r.getOccupiedSeats();
+    			location.setOccupiedSeats(OccupiedSeats);
+    			
+    			buildings.add(r.getRoomId().getBuilding());
+    			 
+    		
+    		}
+    		location.setNumberOfBuildings(buildings.size());
+    		locationList.add(location);
+    	}
+    	return locationList;
+    }
+    
+    
+    public List<LocationStatsDto> getRoomsFilteredAndSorted(
+            Double minOccupancy, Double maxOccupancy, int sortBy,int alpha){
+    	
+    	List<LocationStatsDto> locationList = getAllLocations();
+    	
+    	locationList = locationList.stream().filter(x-> {double occupancy = x.getOccupiedSeats()/x.getTotalSeats(); 
+    	return occupancy >= minOccupancy && occupancy <= maxOccupancy;}).collect(Collectors.toList());
+    	
+    	if(sortBy==1) {
+    		Collections.sort(locationList,(x,y)->{
+    			double occ1=x.getOccupiedSeats()/x.getTotalSeats();
+    			double occ2=y.getOccupiedSeats()/y.getTotalSeats();
+    			return Double.compare(occ1,occ2);
+    		});
+    	}
+    	else {
+    		Collections.sort(locationList,(x,y)->{
+    			double occ1=x.getOccupiedSeats()/x.getTotalSeats();
+    			double occ2=y.getOccupiedSeats()/y.getTotalSeats();
+    			return Double.compare(occ2,occ1);
+    		});
+    	}
+    	
+    	
+    	if(alpha == 1) {
+    		Collections.sort(locationList,(x,y)->{
+    		
+    			String s1 = x.getLocation();
+    			String s2 = y.getLocation();
+    			return s1.compareTo(s2);
+    		});
+    	}else {
+    		Collections.sort(locationList,(x,y)->{
+        		
+    			String s1 = x.getLocation();
+    			String s2 = y.getLocation();
+    			return s2.compareTo(s1);
+    		});
+    		
+    	}
+    			
+    	return locationList;
+    	
+    }
+    
+    
+    
 // 
 //    public List<Room> getAllRooms() {
 //        return roomRepository.findAll();
 //    }
-// 
+//// 
 //    public List<String> getAllLocations() {
 //        return roomRepository.findAllLocations();
 //    }
-//
+////
 //    public List<LocationStatsDto> getAllLocationStats() {
-//        List<Room> rooms = getAllRooms();
-//        return groupRoomsByLocation(rooms);
+////        List<Room> rooms = getAllRooms();
+////        return groupRoomsByLocation(rooms);
+//    	
+//    	
 //    }
 // 
 //    /**

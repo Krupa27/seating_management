@@ -72,6 +72,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.seating_management.dto.LocationStatsDto;
+import com.example.seating_management.dto.RoomWrapper;
 import com.example.seating_management.model.Room;
 import com.example.seating_management.service.LocationService;
 
@@ -85,42 +86,44 @@ import java.util.List;
 @CrossOrigin("*")
 public class LocationController {
 
-//    @Autowired
-//    private LocationService locationService;
+    @Autowired
+    private LocationService locationService;
 
     /**
      * Get all location statistics.
      */
-//    @GetMapping
-//    public List<LocationStatsDto> getAllLocationStats() {
-//        return locationService.getAllLocationStats();
-//    }
-//
-//    /**
-//     * Search locations by name.
-//     */
-//    @GetMapping("/search")
-//    public List<LocationStatsDto> searchByLocationName(@RequestParam String name) {
-//        return locationService.searchByLocationName(name);
-//    }
-//
-//    /**
-//     * Sort locations by name or occupancy.
-//     * @param sortBy name or occupancy
-//     * @param order asc or desc
-//     */
-//    @GetMapping("/sort")
-//    public List<LocationStatsDto> sortLocations(
-//            @RequestParam String sortBy,
-//            @RequestParam(defaultValue = "asc") String order) {
-//        return locationService.sortLocations(sortBy, order);
-//    }
-//
-//    /**
-//     * Filter locations by occupancy percentage.
-//     * @param type greater or less
-//     * @param value threshold value
-//     */
+    @GetMapping("/")
+    public List<LocationStatsDto> getAllLocationStats() {
+        return locationService.getAllLocations();
+    }
+
+    /**
+     * Search locations by name.
+     */
+    @GetMapping("/search")
+    public List<RoomWrapper> searchByLocationName(@RequestParam String name) {
+        return locationService.getRoomsByLocation(name);
+    }
+
+    /**
+     * Sort locations by name or occupancy.
+     * @param sortBy name or occupancy
+     * @param order asc or desc
+     */
+    @GetMapping("/sort")
+    public List<LocationStatsDto> sort(
+    		@RequestParam(defaultValue = "0.0") Double minOccupancy,
+    		@RequestParam(defaultValue = "100.0") Double maxOccupancy,
+            @RequestParam(defaultValue = "1") int sortBy,
+            @RequestParam(defaultValue = "1") int order) {
+        return locationService.getRoomsFilteredAndSorted(minOccupancy,maxOccupancy,sortBy, order);
+    }
+
+    /**
+     * Filter locations by occupancy percentage.
+     * @param type greater or less
+     * @param value threshold value
+     */
 //    @GetMapping("/filter")
 //    public List<LocationStatsDto> filterByOccupancy(
 //            @RequestParam String type,

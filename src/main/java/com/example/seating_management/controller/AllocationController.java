@@ -17,10 +17,10 @@ public class AllocationController {
 	public AllocationController(AllocationService allocationService) {
 		this.allocationService=allocationService;
 	}
-	@GetMapping("/dynamicAllocation")
-	public ResponseEntity<String> dynamicAllocation(@RequestParam String batchCode,@RequestParam int fitting){
-		return ResponseEntity.ok(allocationService.dynamicAllocation(batchCode,fitting));
-	}
+//	@GetMapping("/dynamicAllocation")
+//	public ResponseEntity<String> dynamicAllocation(@RequestParam String batchCode,@RequestParam int fitting){
+//		return ResponseEntity.ok(allocationService.dynamicAllocation(batchCode,fitting));
+//	}
 }
  
  
