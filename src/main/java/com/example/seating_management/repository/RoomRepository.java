@@ -17,7 +17,12 @@ import java.util.List;
 @Repository
 public interface RoomRepository extends JpaRepository<Room, RoomId>, JpaSpecificationExecutor<Room> {
 	
+	List<Room> findByIdLocationAndIdBuildingAndRoomTypeAndIdRoomNumber(String location, String building, String roomType, Integer roomNumber);
+
+	
 	List<Room> findByIdLocationAndIdBuilding(String id_location, String id_building);
+	
+	
 	
 	@Query("SELECT r FROM Room r WHERE LOWER(r.roomType) = LOWER(:roomType) AND r.id.location = :location AND r.id.building = :building")
 	List<Room> findByIdLocationAndIdBuildingAndRoomType(String location, String building, String roomType);

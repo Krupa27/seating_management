@@ -92,7 +92,7 @@ public class LocationController {
     /**
      * Get all location statistics.
      */
-    @GetMapping("/")
+    @GetMapping("")
     public List<LocationStatsDto> getAllLocationStats() {
         return locationService.getAllLocations();
     }

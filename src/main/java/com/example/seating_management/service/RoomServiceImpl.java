@@ -44,6 +44,18 @@ public class RoomServiceImpl  {
     	return getRoomOccupancy(roomId, date.toString());
     }
 	
+	
+	// *** NEW METHOD FOR BATCH ADD ***
+    public List<Room> saveAllRooms(List<Room> rooms) {
+        // You might add additional logic here, like setting default status
+        // or validating rooms before saving.
+        rooms.forEach(room -> {
+            if (room.getStatus() == null || room.getStatus().isEmpty()) {
+                room.setStatus("ACTIVE");
+            }
+        });
+        return roomRepository.saveAll(rooms);
+    }
 
 
     public Room addRoom(Room room) {
@@ -73,7 +85,7 @@ public class RoomServiceImpl  {
     	List<RoomWrapper> rwList= new ArrayList<>();
     	for(Room r:roomRepository.findAll()) {
     		 LocalDate today = LocalDate.now();
-    		RoomWrapper rw=new RoomWrapper(r.getId(),r.getSeatCount(),this.getRoomOccupancy(r.getId(), today));
+    		RoomWrapper rw=new RoomWrapper(r.getId(),r.getSeatCount(),this.getRoomOccupancy(r.getId(), today),r.getRoomType(),r.getRoomType());
     		rwList.add(rw);
     	}
     
@@ -121,7 +133,7 @@ public class RoomServiceImpl  {
         	List<RoomWrapper> rwList = new ArrayList<>();
         	for(Room r:roomsGroupedByType.get(type)) {
        		 	LocalDate today = LocalDate.now();
-	       		RoomWrapper rw=new RoomWrapper(r.getId(),r.getSeatCount(),this.getRoomOccupancy(r.getId(), today));
+	       		RoomWrapper rw=new RoomWrapper(r.getId(),r.getSeatCount(),this.getRoomOccupancy(r.getId(), today),r.getRoomType(),r.getRoomType());
 	       		rwList.add(rw);
         	}
         	mapForRoomWrapper.put(type, rwList);
@@ -138,13 +150,59 @@ public class RoomServiceImpl  {
         
     	for(Room r:roomRepository.findByIdLocationAndIdBuildingAndRoomType(location, building, roomType)) {
     		 LocalDate today = LocalDate.now();
-    		RoomWrapper rw=new RoomWrapper(r.getId(),r.getSeatCount(),this.getRoomOccupancy(r.getId(), today));
+    		RoomWrapper rw=new RoomWrapper(r.getId(),r.getSeatCount(),this.getRoomOccupancy(r.getId(), today),r.getRoomType(),r.getRoomType());
     		rwList.add(rw);
     	}
     
     	return rwList;
         
     }
+    
+    public Optional<RoomWrapper> getRoomByLocationBuildingTypeAndNumber(String location, String building, String roomType, Integer roomNumber) {
+        List<Room> matches = roomRepository
+            .findByIdLocationAndIdBuildingAndRoomTypeAndIdRoomNumber(location, building, roomType, roomNumber);
+
+        if (matches.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Room r = matches.get(0);
+        LocalDate today = LocalDate.now();
+        RoomWrapper rw = new RoomWrapper(r.getId(), r.getSeatCount(), this.getRoomOccupancy(r.getId(), today),r.getRoomType(),r.getRoomType());
+        System.out.println("→ location = " + location);
+        System.out.println("→ building = " + building);
+        System.out.println("→ roomType = " + roomType);
+        System.out.println("→ roomNumber = " + roomNumber);
+        System.out.println("→ " + rw);
+
+        return Optional.of(rw);
+    }
+    
+    
+    
+    
+    
+    public List<RoomWrapper> getRoomsBySizeAndAvailability(int size, LocalDate date) {
+        List<RoomWrapper> result = new ArrayList<>();
+
+        List<Room> allRooms = roomRepository.findAll(); // or filter by location/building if needed
+
+        for (Room room : allRooms) {
+            int capacity = room.getSeatCount();
+            int occupied = this.getRoomOccupancy(room.getId(), date); // uses BatchFeign
+            int vacant = capacity - occupied;
+
+            if (vacant >= size) {
+                RoomWrapper wrapper = new RoomWrapper(room.getId(), capacity, occupied,room.getRoomType(),room.getRoomType());
+                result.add(wrapper);
+            }
+        }
+
+        return result;
+    }
+
+
+
 
 //    public List<Room> getRoomsBySize(int size) {
 //        return roomRepository.findRoomsByMinimumSize(size);

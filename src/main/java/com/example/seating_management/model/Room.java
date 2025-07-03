@@ -30,10 +30,7 @@ public class Room {
 //    private Integer seatingForCalculation;
     private String priority;
     private String status;
-//    private String internGenc; 
-//    private Integer canBeUtilizedSeats; 
-//    private String learningTrack;
-//    private LocalDate availableFrom; 
+
      
     
     public RoomId getId() {

@@ -81,5 +81,11 @@ public class RoomId implements Serializable {
 	public void setRoomNumber(Integer roomNumber) {
 		this.roomNumber = roomNumber;
 	}
+	@Override
+	public String toString() {
+		return "RoomId [location=" + location + ", facility=" + facility + ", building=" + building + ", floorNumber="
+				+ floorNumber + ", wing=" + wing + ", roomNumber=" + roomNumber + "]";
+	}
+	
 	
 }

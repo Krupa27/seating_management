@@ -36,6 +36,21 @@ public class RoomsController {
 	    public Room addRoom(@RequestBody Room room) {
 	        return roomService.addRoom(room);
 	    }
+	    
+	    // *** NEW ENDPOINT FOR BATCH ADD ***
+	    @PostMapping("/add-batch")
+	    public ResponseEntity<String> addRoomsBatch(@RequestBody List<Room> rooms) {
+	        try {
+	            if (rooms == null || rooms.isEmpty()) {
+	                return new ResponseEntity<>("No rooms provided for batch add.", HttpStatus.BAD_REQUEST);
+	            }
+	            roomService.saveAllRooms(rooms); // Use the new service method
+	            return new ResponseEntity<>("Rooms added in batch successfully!", HttpStatus.CREATED);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return new ResponseEntity<>("Failed to add rooms in batch: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	        }
+	    }
 
 	    @PutMapping("/deactivate")
 	    public Room deactivateRoom(@RequestBody RoomId roomId) {
@@ -87,10 +102,39 @@ public class RoomsController {
 	        return roomService.getRoomOccupancy(roomId, parsedDate);
 	    }
 
-	    @GetMapping("/find")
+	    @PostMapping("/find")
 	    public Optional<Room> getRoomById(@RequestBody RoomId roomId) {
 	        return roomService.getRoomById(roomId);
 	    }
+	    
+	    // --- MODIFIED ENDPOINT ---
+	    @GetMapping("/by-location-building-roomtype-details") // New, more specific endpoint name
+	    public ResponseEntity<List<RoomWrapper>> getRoomsByLocationBuildingAndTypeWithDetails(
+	            @RequestParam String location,
+	            @RequestParam String building,
+	            @RequestParam String roomType) {
+
+	        List<RoomWrapper> rooms = roomService.getRoomsByLocationBuildingAndType(location, building, roomType);
+
+	        if (rooms.isEmpty()) {
+	            return ResponseEntity.noContent().build(); // 204 No Content
+	        }
+	        return ResponseEntity.ok(rooms); // 200 OK with list of RoomWrapper
+	    }
+	    
+	    @GetMapping("/view")
+	    public ResponseEntity<RoomWrapper> getRoomDetailsByParams(
+	            @RequestParam String location,
+	            @RequestParam String building,
+	            @RequestParam String roomType,
+	            @RequestParam Integer roomNumber) {
+	    	
+	        return roomService.getRoomByLocationBuildingTypeAndNumber(location, building, roomType, roomNumber)
+	                .map(ResponseEntity::ok)
+	                .orElse(ResponseEntity.notFound().build());
+	    }
+
+
 
 //    private final RoomService roomService;
 //
@@ -174,9 +218,17 @@ public class RoomsController {
 //        return ResponseEntity.ok(rooms);
 //    }
 //    
-//    @GetMapping("/by-size")
-//    public List<Room> getRoomsBySize(@RequestParam int size) {
-//    	System.out.println(roomService.getRoomsBySize(size));
-//        return roomService.getRoomsBySize(size);
-//    }
+	    @GetMapping("/by-size-date")
+	    public ResponseEntity<List<RoomWrapper>> getRoomsBySizeAndDate(
+	            @RequestParam int size,
+	            @RequestParam String date) {
+
+	        LocalDate parsedDate = LocalDate.parse(date);
+	        List<RoomWrapper> availableRooms = roomService.getRoomsBySizeAndAvailability(size, parsedDate);
+
+	        return availableRooms.isEmpty()
+	            ? ResponseEntity.noContent().build()
+	            : ResponseEntity.ok(availableRooms);
+	    }
+
 }

@@ -45,6 +45,11 @@ public class LocationStatsDto {
 		this.occupiedSeats = occupiedSeats;
 		this.numberOfBuildings = numberOfBuildings;
 	}
+	@Override
+	public String toString() {
+		return "LocationStatsDto [location=" + location + ", totalSeats=" + totalSeats + ", occupiedSeats="
+				+ occupiedSeats + ", numberOfBuildings=" + numberOfBuildings + "]";
+	}
 	
 	
 }
