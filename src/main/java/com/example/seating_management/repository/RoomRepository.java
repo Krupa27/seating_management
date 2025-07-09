@@ -21,7 +21,8 @@ public interface RoomRepository extends JpaRepository<Room, RoomId>, JpaSpecific
 
 	
 	List<Room> findByIdLocationAndIdBuilding(String id_location, String id_building);
-	
+	 List<Room> findByIdLocationAndIdBuildingAndRoomTypeAndIdFloorNumberAndIdRoomNumber(
+		        String idLocation, String idBuilding, String roomType, Integer idFloorNumber, Integer idRoomNumber);
 	
 	
 	@Query("SELECT r FROM Room r WHERE LOWER(r.roomType) = LOWER(:roomType) AND r.id.location = :location AND r.id.building = :building")

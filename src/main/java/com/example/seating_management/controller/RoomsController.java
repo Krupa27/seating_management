@@ -122,14 +122,33 @@ public class RoomsController {
 	        return ResponseEntity.ok(rooms); // 200 OK with list of RoomWrapper
 	    }
 	    
+//	    @GetMapping("/view")
+//	    public ResponseEntity<RoomWrapper> getRoomDetailsByParams(
+//	            @RequestParam String location,
+//	            @RequestParam String building,
+//	            @RequestParam String roomType,
+//	            @RequestParam Integer roomNumber) {
+//	    	
+//	        return roomService.getRoomByLocationBuildingTypeAndNumber(location, building, roomType, roomNumber)
+//	                .map(ResponseEntity::ok)
+//	                .orElse(ResponseEntity.notFound().build());
+//	    }
 	    @GetMapping("/view")
 	    public ResponseEntity<RoomWrapper> getRoomDetailsByParams(
 	            @RequestParam String location,
 	            @RequestParam String building,
 	            @RequestParam String roomType,
+	            @RequestParam Integer floorNumber, // <--- NEW PARAMETER
 	            @RequestParam Integer roomNumber) {
-	    	
-	        return roomService.getRoomByLocationBuildingTypeAndNumber(location, building, roomType, roomNumber)
+
+	        System.out.println("Received request for room details:");
+	        System.out.println("  Location: " + location);
+	        System.out.println("  Building: " + building);
+	        System.out.println("  Room Type: " + roomType);
+	        System.out.println("  Floor Number: " + floorNumber); // Log new param
+	        System.out.println("  Room Number: " + roomNumber);
+
+	        return roomService.getRoomByLocationBuildingTypeAndNumber(location, building, roomType, floorNumber, roomNumber) // <--- Pass floorNumber
 	                .map(ResponseEntity::ok)
 	                .orElse(ResponseEntity.notFound().build());
 	    }

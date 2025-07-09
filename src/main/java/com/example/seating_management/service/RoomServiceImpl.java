@@ -158,22 +158,60 @@ public class RoomServiceImpl  {
         
     }
     
-    public Optional<RoomWrapper> getRoomByLocationBuildingTypeAndNumber(String location, String building, String roomType, Integer roomNumber) {
+//    public Optional<RoomWrapper> getRoomByLocationBuildingTypeAndNumber(String location, String building, String roomType, Integer roomNumber) {
+//        List<Room> matches = roomRepository
+//            .findByIdLocationAndIdBuildingAndRoomTypeAndIdRoomNumber(location, building, roomType, roomNumber);
+//
+//        if (matches.isEmpty()) {
+//            return Optional.empty();
+//        }
+//
+//        Room r = matches.get(0);
+//        LocalDate today = LocalDate.now();
+//        RoomWrapper rw = new RoomWrapper(r.getId(), r.getSeatCount(), this.getRoomOccupancy(r.getId(), today),r.getRoomType(),r.getRoomType());
+//        System.out.println("→ location = " + location);
+//        System.out.println("→ building = " + building);
+//        System.out.println("→ roomType = " + roomType);
+//        System.out.println("→ roomNumber = " + roomNumber);
+//        System.out.println("→ " + rw);
+//
+//        return Optional.of(rw);
+//    }
+    
+    public Optional<RoomWrapper> getRoomByLocationBuildingTypeAndNumber(
+            String location, String building, String roomType, Integer floorNumber, Integer roomNumber) {
+
+        // Assuming RoomRepository has a method to find by all parts of the composite key
+        // You likely need to define this in your RoomRepository interface
+        // e.g., Optional<Room> findByIdLocationAndIdBuildingAndRoomTypeAndIdFloorNumberAndIdRoomNumber(...)
+        
         List<Room> matches = roomRepository
-            .findByIdLocationAndIdBuildingAndRoomTypeAndIdRoomNumber(location, building, roomType, roomNumber);
+            .findByIdLocationAndIdBuildingAndRoomTypeAndIdFloorNumberAndIdRoomNumber(
+                location, building, roomType, floorNumber, roomNumber);
 
         if (matches.isEmpty()) {
+            System.out.println("No room found for criteria: Location=" + location + ", Building=" + building +
+                               ", RoomType=" + roomType + ", Floor=" + floorNumber + ", RoomNumber=" + roomNumber);
             return Optional.empty();
         }
 
-        Room r = matches.get(0);
+        // Since floorNumber is now part of the unique identifier, 'matches' should ideally have only one element.
+        // If it returns multiple, your data model/query needs further refinement to ensure true uniqueness.
+        Room r = matches.get(0); // Take the first one if multiple are returned (shouldn't happen with correct ID)
         LocalDate today = LocalDate.now();
-        RoomWrapper rw = new RoomWrapper(r.getId(), r.getSeatCount(), this.getRoomOccupancy(r.getId(), today),r.getRoomType(),r.getRoomType());
-        System.out.println("→ location = " + location);
-        System.out.println("→ building = " + building);
-        System.out.println("→ roomType = " + roomType);
-        System.out.println("→ roomNumber = " + roomNumber);
-        System.out.println("→ " + rw);
+
+        // Assuming getRoomOccupancy is a method within RoomService or another service
+        // that takes RoomId and LocalDate
+        int occupiedSeats = getRoomOccupancy(r.getId(), today); // Ensure this method exists and works
+
+        RoomWrapper rw = new RoomWrapper(
+            r.getId(),
+            r.getSeatCount(),
+            occupiedSeats,
+            r.getRoomType(), // This seems to be the raw type from DB
+            r.getRoomType() // This might be the display type, or you map it here
+        );
+        System.out.println("→ Found Room: " + rw);
 
         return Optional.of(rw);
     }

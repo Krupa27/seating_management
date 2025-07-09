@@ -76,12 +76,108 @@ public class LocationService {
     }
     
     
+//    public List<LocationStatsDto> getRoomsFilteredAndSorted(
+//            Double minOccupancy, Double maxOccupancy, int sortBy, int alpha) {
+//
+//        List<LocationStatsDto> locationList = getAllLocations();
+//
+//        // ✅ Filter by occupancy range (corrected with proper type casting)
+//        locationList = locationList.stream()
+//            .filter(x -> {
+//                double occupancy = x.getTotalSeats() > 0
+//                    ? (double) x.getOccupiedSeats() / x.getTotalSeats()
+//                    : 0.0;
+//                return occupancy >= minOccupancy && occupancy <= maxOccupancy;
+//            })
+//            .collect(Collectors.toList());
+//
+//        // ✅ Sort by occupancy (ascending or descending)
+//        if (sortBy == 1) {
+//            locationList.sort((x, y) -> {
+//                double occ1 = x.getTotalSeats() > 0
+//                    ? (double) x.getOccupiedSeats() / x.getTotalSeats()
+//                    : 0.0;
+//                double occ2 = y.getTotalSeats() > 0
+//                    ? (double) y.getOccupiedSeats() / y.getTotalSeats()
+//                    : 0.0;
+//                return Double.compare(occ1, occ2);
+//            });
+//        } else {
+//            locationList.sort((x, y) -> {
+//                double occ1 = x.getTotalSeats() > 0
+//                    ? (double) x.getOccupiedSeats() / x.getTotalSeats()
+//                    : 0.0;
+//                double occ2 = y.getTotalSeats() > 0
+//                    ? (double) y.getOccupiedSeats() / y.getTotalSeats()
+//                    : 0.0;
+//                return Double.compare(occ2, occ1);
+//            });
+//        }
+//
+//        // ✅ Secondary sort alphabetically (ascending or descending)
+//        if (alpha == 1) {
+//            locationList.sort(Comparator.comparing(LocationStatsDto::getLocation));
+//        } else {
+//            locationList.sort((x, y) -> y.getLocation().compareTo(x.getLocation()));
+//        }
+//
+//        return locationList;
+//    }
+//    public List<LocationStatsDto> getRoomsFilteredAndSorted(
+//            Double minOccupancy, Double maxOccupancy, int sortBy, int order) { // Renamed 'alpha' to 'order' for clarity
+//
+//        List<LocationStatsDto> locationList = getAllLocations();
+//
+//        // ✅ Filter by occupancy range (looks correct)
+//        locationList = locationList.stream()
+//            .filter(x -> {
+//                double occupancy = x.getTotalSeats() > 0
+//                    ? (double) x.getOccupiedSeats() / x.getTotalSeats()
+//                    : 0.0;
+//                return occupancy >= minOccupancy && occupancy <= maxOccupancy;
+//            })
+//            .collect(Collectors.toList());
+//
+//        // --- Apply Sorting ---
+//        // sortBy: 0 = Alphabetical, 1 = Occupancy
+//        // order: 0 = Ascending, 1 = Descending
+//
+//        Comparator<LocationStatsDto> comparator = null;
+//
+//        if (sortBy == 0) { // Sort by Alphabetical
+//            if (order == 0) { // Ascending (A-Z)
+//                comparator = Comparator.comparing(LocationStatsDto::getLocation);
+//            } else { // Descending (Z-A)
+//                comparator = (x, y) -> y.getLocation().compareTo(x.getLocation());
+//            }
+//        } else if (sortBy == 1) { // Sort by Occupancy
+//            if (order == 0) { // Ascending (Low to High)
+//                comparator = (x, y) -> {
+//                    double occ1 = x.getTotalSeats() > 0 ? (double) x.getOccupiedSeats() / x.getTotalSeats() : 0.0;
+//                    double occ2 = y.getTotalSeats() > 0 ? (double) y.getOccupiedSeats() / y.getTotalSeats() : 0.0;
+//                    return Double.compare(occ1, occ2); // Low to High
+//                };
+//            } else { // Descending (High to Low)
+//                comparator = (x, y) -> {
+//                    double occ1 = x.getTotalSeats() > 0 ? (double) x.getOccupiedSeats() / x.getTotalSeats() : 0.0;
+//                    double occ2 = y.getTotalSeats() > 0 ? (double) y.getOccupiedSeats() / x.getTotalSeats() : 0.0;
+//                    return Double.compare(occ2, occ1); // High to Low
+//                };
+//            }
+//        }
+//
+//        if (comparator != null) {
+//            locationList.sort(comparator);
+//        }
+//
+//        return locationList;
+//    }
     public List<LocationStatsDto> getRoomsFilteredAndSorted(
-            Double minOccupancy, Double maxOccupancy, int sortBy, int alpha) {
+            Double minOccupancy, Double maxOccupancy, int sortBy, int order) { // Renamed 'alpha' to 'order' for clarity
 
         List<LocationStatsDto> locationList = getAllLocations();
 
-        // ✅ Filter by occupancy range (corrected with proper type casting)
+        // ✅ Filter by occupancy range (looks correct)
         locationList = locationList.stream()
             .filter(x -> {
                 double occupancy = x.getTotalSeats() > 0
@@ -91,40 +187,41 @@ public class LocationService {
             })
             .collect(Collectors.toList());
 
-        // ✅ Sort by occupancy (ascending or descending)
-        if (sortBy == 1) {
-            locationList.sort((x, y) -> {
-                double occ1 = x.getTotalSeats() > 0
-                    ? (double) x.getOccupiedSeats() / x.getTotalSeats()
-                    : 0.0;
-                double occ2 = y.getTotalSeats() > 0
-                    ? (double) y.getOccupiedSeats() / y.getTotalSeats()
-                    : 0.0;
-                return Double.compare(occ1, occ2);
-            });
-        } else {
-            locationList.sort((x, y) -> {
-                double occ1 = x.getTotalSeats() > 0
-                    ? (double) x.getOccupiedSeats() / x.getTotalSeats()
-                    : 0.0;
-                double occ2 = y.getTotalSeats() > 0
-                    ? (double) y.getOccupiedSeats() / y.getTotalSeats()
-                    : 0.0;
-                return Double.compare(occ2, occ1);
-            });
+        // --- Apply Sorting ---
+        // sortBy: 0 = Alphabetical, 1 = Occupancy
+        // order: 0 = Ascending, 1 = Descending
+
+        Comparator<LocationStatsDto> comparator = null;
+
+        if (sortBy == 0) { // Sort by Alphabetical
+            if (order == 0) { // Ascending (A-Z)
+                comparator = Comparator.comparing(LocationStatsDto::getLocation);
+            } else { // Descending (Z-A)
+                comparator = (x, y) -> y.getLocation().compareTo(x.getLocation());
+            }
+        } else if (sortBy == 1) { // Sort by Occupancy
+            if (order == 0) { // Ascending (Low to High)
+                comparator = (x, y) -> {
+                    double occ1 = x.getTotalSeats() > 0 ? (double) x.getOccupiedSeats() / x.getTotalSeats() : 0.0;
+                    double occ2 = y.getTotalSeats() > 0 ? (double) y.getOccupiedSeats() / y.getTotalSeats() : 0.0;
+                    return Double.compare(occ1, occ2); // Low to High
+                };
+            } else { // Descending (High to Low)
+                comparator = (x, y) -> {
+                    double occ1 = x.getTotalSeats() > 0 ? (double) x.getOccupiedSeats() / x.getTotalSeats() : 0.0;
+                    // FIX HERE: Changed x.getTotalSeats() to y.getTotalSeats() for occ2
+                    double occ2 = y.getTotalSeats() > 0 ? (double) y.getOccupiedSeats() / y.getTotalSeats() : 0.0;
+                    return Double.compare(occ2, occ1); // High to Low
+                };
+            }
         }
 
-        // ✅ Secondary sort alphabetically (ascending or descending)
-        if (alpha == 1) {
-            locationList.sort(Comparator.comparing(LocationStatsDto::getLocation));
-        } else {
-            locationList.sort((x, y) -> y.getLocation().compareTo(x.getLocation()));
+        if (comparator != null) {
+            locationList.sort(comparator);
         }
 
         return locationList;
     }
-
-    
     
 //    public List<LocationStatsDto> getRoomsFilteredAndSorted(
 //            Double minOccupancy, Double maxOccupancy, int sortBy,int alpha){
